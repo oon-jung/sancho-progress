@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>산초 운정 작업 정리</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* 글은 content.md 에 있습니다. 이 파일은 모양(색·배치)과 md 를 읽어 그리는 코드만 둡니다. */
+:root{
+  --bg:#f6f7f3; --surface:#ffffff; --line:#dde2d6; --fg:#1d231c; --muted:#5d6858;
+  --accent:#2f6b4f; --accent-soft:#e3efe7; --warn:#9a5c14; --warn-soft:#f6ead8;
+  --bar-a:#c9d3c2; --bar-b:#7fa58d; --bar-c:#2f6b4f;
+  --f-body:"IBM Plex Sans KR",system-ui,-apple-system,"Apple SD Gothic Neo",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#141814; --surface:#1b201b; --line:#2e362d; --fg:#e4e9e0; --muted:#9aa694;
+  --accent:#7cc39c; --accent-soft:#1f3328; --warn:#e0a35a; --warn-soft:#3a2d1c;
+  --bar-a:#3c4639; --bar-b:#4f7d62; --bar-c:#7cc39c; color-scheme:dark}}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:15px;line-height:1.65;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:40px 64px}
+img{max-width:100%}
+#page{max-width:880px;margin:0 auto;display:flex;flex-direction:column;gap:56px}
+.head{display:flex;flex-direction:column;gap:12px}
+h1,h2,h3{text-wrap:balance;margin:0;line-height:1.3}
+h1{font-size:30px;font-weight:700;letter-spacing:-.01em}
+h2{font-size:21px;font-weight:700;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+h2 .tag{font-family:var(--f-mono);font-size:12px;font-weight:500;color:var(--muted);letter-spacing:.04em}
+h3{font-size:15px;font-weight:600}
+p{margin:0;max-width:74ch}
+.head>p{font-size:16px}
+a{color:var(--accent)}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:2px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.06em;color:var(--muted);text-transform:uppercase}
+section{display:flex;flex-direction:column;gap:16px;scroll-margin-top:16px}
+ul{margin:0;padding-left:1.1em;max-width:74ch}
+li+li{margin-top:4px}
+blockquote{margin:0;font-size:13.5px;color:var(--muted);max-width:74ch}
+blockquote p{max-width:none}
+code{font-family:var(--f-mono);font-size:13px;background:var(--accent-soft);padding:0 5px;border-radius:4px}
+.chip{display:inline-block;font-size:12px;font-weight:600;padding:1px 9px;border-radius:999px;white-space:nowrap;background:var(--accent-soft);color:var(--accent)}
+.chip.wait{background:var(--warn-soft);color:var(--warn)}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums;font-size:14px}
+th,td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-size:12.5px;color:var(--muted);font-weight:500;white-space:nowrap}
+td[align=right],th[align=right]{text-align:right;white-space:nowrap}
+.facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.fact{background:var(--surface);padding:14px 16px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.fact b{font-size:22px;font-variant-numeric:tabular-nums}
+.fact span{font-size:13px;color:var(--muted)}
+@media (max-width:640px){.facts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;align-items:start}
+.two>*{min-width:0}
+@media (max-width:700px){.two{grid-template-columns:1fr}}
+.shots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.shots.one{grid-template-columns:1fr}
+@media (max-width:640px){.shots{grid-template-columns:1fr}}
+figure{margin:0;display:flex;flex-direction:column;gap:8px;min-width:0}
+figure img{display:block;width:100%;border-radius:8px;border:1px solid var(--line)}
+figcaption{font-size:13.5px;color:var(--muted)}
+figcaption strong{color:var(--fg);font-weight:600}
+.flow{display:grid;grid-template-columns:repeat(var(--n,5),minmax(0,1fr));gap:8px;counter-reset:s}
+.step{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.step::before{counter-increment:s;content:counter(s);font-family:var(--f-mono);font-size:12px;color:var(--accent);font-weight:500}
+.step b{font-size:14px}
+.step span{font-size:12.5px;color:var(--muted);line-height:1.5}
+@media (max-width:760px){.flow{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.bars{display:flex;flex-direction:column;gap:10px}
+.bar{display:grid;grid-template-columns:minmax(0,12rem) minmax(0,1fr) 3.2rem;align-items:center;gap:12px}
+.bar .lab{font-size:13.5px}
+.bar .track{height:22px;background:var(--bg);border-radius:4px;overflow:hidden}
+.bar .fill{height:100%;border-radius:4px}
+.bar .val{font-variant-numeric:tabular-nums;font-weight:600;text-align:right}
+@media (max-width:520px){.bar{grid-template-columns:minmax(0,1fr) 2.8rem}.bar .lab{grid-column:1/-1}}
+.kv{display:grid;grid-template-columns:minmax(0,13rem) minmax(0,1fr);gap:0 20px;border-top:1px solid var(--line);margin:0}
+.kv>*{padding:12px 0;border-bottom:1px solid var(--line);min-width:0;margin:0}
+.kv dt{font-weight:600}
+@media (max-width:640px){.kv{grid-template-columns:1fr}.kv dt{border-bottom:none;padding-bottom:0}}
+footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:16px}
+.err{background:var(--warn-soft);color:var(--warn);padding:16px;border-radius:8px}
+</style>
+</head>
+<body>
+<main id="page"><p class="muted">불러오는 중…</p></main>
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+<script>
+// content.md 를 읽어 그립니다. 특수 블록 규칙은 README.md 참고.
+const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const inline = s => marked.parseInline(s.trim());
+const rows = t => t.split("\n").map(l => l.trim()).filter(Boolean).map(l => l.split(/\s+\|\s+/));
+
+const blocks = {
+  facts: t => `<div class="facts">${rows(t).map(([v, d]) => `<div class="fact"><b>${inline(v)}</b><span>${inline(d || "")}</span></div>`).join("")}</div>`,
+  flow: t => { const r = rows(t); return `<div class="flow" style="--n:${r.length}">${r.map(([a, b]) => `<div class="step"><b>${inline(a)}</b><span>${inline(b || "")}</span></div>`).join("")}</div>`; },
+  bars: t => `<div class="bars">${rows(t).map(([lab, v, max, c]) => {
+      const w = Math.max(0, Math.min(100, parseFloat(v) / parseFloat(max || v) * 100));
+      return `<div class="bar"><span class="lab">${inline(lab)}</span><div class="track"><div class="fill" style="width:${w.toFixed(1)}%;background:var(--bar-${(c || "c").trim()})"></div></div><span class="val">${esc(v)}</span></div>`;
+    }).join("")}</div>`,
+  shots: (t, opt) => `<div class="shots ${opt || ""}">${rows(t).map(([src, cap]) => `<figure><img src="${esc(src)}" alt="${esc((cap || "").replace(/\*/g, ""))}" loading="lazy"><figcaption>${inline(cap || "")}</figcaption></figure>`).join("")}</div>`,
+  kv: t => `<dl class="kv">${rows(t).map(([k, v]) => `<dt>${inline(k)}</dt><dd>${inline(v || "")}</dd>`).join("")}</dl>`,
+};
+
+marked.use({ renderer: {
+  code(code, lang) {
+    const [name, ...opt] = (lang || "").split(/\s+/);
+    return blocks[name] ? blocks[name](code, opt.join(" ")) : false;
+  },
+  table(header, body) { return `<div class="tbl"><table><thead>${header}</thead><tbody>${body}</tbody></table></div>`; },
+}});
+
+function preprocess(md) {
+  // :::two / :::panel 제목 / ::: 를 div 로 바꿉니다(겹쳐 쓸 수 있음). 코드 블록 안은 건드리지 않습니다.
+  const out = []; let fence = false;
+  for (const line of md.replace(/<!--[\s\S]*?-->/g, "").split("\n")) {
+    if (/^```/.test(line)) fence = !fence;
+    const m = !fence && line.match(/^:::\s*(\w+)?\s*(.*)$/);
+    if (m && m[1] === "two") out.push("", '<div class="two">', "");
+    else if (m && m[1] === "panel") out.push("", '<div class="panel">', "", m[2] ? `<h3>${esc(m[2])}</h3>` : "", "");
+    else if (m) out.push("", "</div>", "");
+    else out.push(line);
+  }
+  return out.join("\n");
+}
+
+function build(md) {
+  let eyebrow = "", footer = "";
+  md = md.replace(/^@eyebrow\s+(.*)$/m, (_, t) => (eyebrow = t, "")).replace(/^@footer\s+(.*)$/m, (_, t) => (footer = t, ""));
+  let html = marked.parse(preprocess(md));
+  html = html.replace(/\[\[(!?)([^\]]+)\]\]/g, (_, w, t) => `<span class="chip${w ? " wait" : ""}">${t}</span>`);
+  const tmp = document.createElement("div"); tmp.innerHTML = html;
+  const page = document.getElementById("page"); page.innerHTML = "";
+  const head = document.createElement("header"); head.className = "head";
+  if (eyebrow) head.insertAdjacentHTML("beforeend", `<span class="eyebrow">${inline(eyebrow)}</span>`);
+  page.append(head);
+  let cur = head;
+  for (const node of [...tmp.childNodes]) {
+    if (node.nodeName === "H2") {
+      const sec = document.createElement("section");
+      let text = node.textContent, tag = "", id = "";
+      const t = text.match(/^(.*?)\s+\|\s+(.*)$/); if (t) { text = t[1]; tag = t[2]; }
+      const i = text.match(/^(.*?)\s*\{#([\w-]+)\}\s*$/); if (i) { text = i[1]; id = i[2]; }
+      if (id) sec.id = id;
+      sec.insertAdjacentHTML("beforeend", `<h2>${esc(text)}${tag ? ` <span class="tag">${esc(tag)}</span>` : ""}</h2>`);
+      page.append(sec); cur = sec;
+    } else if (node.nodeType === 1 || node.textContent.trim()) {
+      if (node.nodeName === "H1") document.title = node.textContent;
+      cur.append(node);
+    }
+  }
+  if (footer) page.insertAdjacentHTML("beforeend", `<footer>${inline(footer)}</footer>`);
+  if (location.hash) document.getElementById(location.hash.slice(1))?.scrollIntoView();
+}
+
+fetch("content.md", { cache: "no-cache" })
+  .then(r => { if (!r.ok) throw new Error(r.status); return r.text(); })
+  .then(build)
+  .catch(e => { document.getElementById("page").innerHTML = `<div class="err">content.md 를 읽지 못했습니다 (${esc(String(e.message || e))}). 파일을 직접 열었다면 웹 주소로 열거나 README 의 "내 컴퓨터에서 보기"를 따라 주세요.</div>`; });
+</script>
+</body>
+</html>
